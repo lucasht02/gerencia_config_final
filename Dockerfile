@@ -12,7 +12,7 @@ COPY src/ src/
 COPY tests/ tests/
 
 # Define variável de ambiente para testes
-ENV PYTHONPATH=/app/src
+ENV PYTHONPATH=/app
 
 # Comando padrão (pode ser sobrescrito pelo container)
 CMD ["pytest", "--maxfail=1", "--disable-warnings", "-q"]

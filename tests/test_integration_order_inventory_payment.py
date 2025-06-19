@@ -13,7 +13,7 @@ class DummyPM:
 def test_order_inventory_payment_integration():
     # 1) Crio produto e estoque
     prod = Product("Burger", 10.0, 5)
-    inv = Inventory()git
+    inv = Inventory()
     inv.add_product(prod, 5)
     assert inv.products[prod] == 5
 

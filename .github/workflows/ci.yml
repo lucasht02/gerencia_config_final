@@ -1,18 +1,36 @@
-name: Build & Test Docker
+name: Build → Test → Publish
 
 on:
   push:
-    branches: [ master ]
+    branches: [ main ]
 
 jobs:
   build_and_test:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout do código
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
+      - run: docker build -t restaurante-software:ci-test .
+      - run: docker run --rm restaurante-software:ci-test
 
-      - name: Build da imagem Docker
-        run: docker build -t restaurante-software:latest .
+  push_image:
+    needs: build_and_test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
 
-      - name: Executar testes no container
-        run: docker run --rm restaurante-software:latest
+      - name: Login no Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USER }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build e taguear imagem
+        run: |
+          docker build -t ${{ secrets.DOCKERHUB_USER }}/restaurante-software:${{ github.sha }} .
+          docker tag ${{ secrets.DOCKERHUB_USER }}/restaurante-software:${{ github.sha }} \
+                     ${{ secrets.DOCKERHUB_USER }}/restaurante-software:latest
+
+      - name: Push para o registry
+        run: |
+          docker push ${{ secrets.DOCKERHUB_USER }}/restaurante-software:${{ github.sha }}
+          docker push ${{ secrets.DOCKERHUB_USER }}/restaurante-software:latest

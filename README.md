@@ -28,7 +28,7 @@ Este projeto demonstra um Plano de Gerenciamento de Configuração aplicado ao �
 
 ```bash
 # 1. Clone o repositório
-git clone git@github.com:SEU_USUARIO/restaurante-software.git
+git clone git@github.com:lucasht02/restaurante-software.git
 cd restaurante-software
 
 # 2. Crie e ative um ambiente virtual
@@ -39,3 +39,5 @@ source venv/bin/activate
 pip install --upgrade pip setuptools
 pip install -r requirements.txt
 
+# 4. Para executar os testes
+pytest --maxfail=1 --disable-warnings -q

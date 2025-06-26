@@ -41,3 +41,5 @@ pip install -r requirements.txt
 
 # 4. Para executar os testes
 pytest --maxfail=1 --disable-warnings -q
+
+Teste aula
